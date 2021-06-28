@@ -1,7 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_smart_dialog/flutter_smart_dialog.dart';
-import 'package:oktoast/oktoast.dart';
 
 void main() => runApp(new MyApp());
 
@@ -12,24 +10,32 @@ class MyApp extends StatelessWidget {
       theme: new ThemeData(
         primaryColor: Colors.deepOrange,
       ),
-      home: new RandomWords(),
-      builder: (context, child) {
-        return FlutterSmartDialog(child: child);
-      },
+      home: new DialogTest(),
     );
   }
 }
 
-class RandomWords extends StatefulWidget {
+void showAlertDialog(BuildContext context,Widget contentWidget){
+  showDialog(context: context,
+      builder:(BuildContext context){
+      return new AlertDialog(
+        title: null,
+        backgroundColor: Colors.green,
+        contentPadding: EdgeInsets.all(0),
+
+        content: contentWidget,
+        actions: <Widget>[],
+      );
+      },
+  );
+}
+
+class DialogTest extends StatefulWidget {
   @override
-  createState() => new RandomWordsState();
+  createState() => new DialogTestState();
 }
 
-void _closeWindow(){
-  SmartDialog.dismiss();
-}
-
-Widget genUpgradePopupWindow() {
+Widget _genUpgradePopupWindow(BuildContext context) {
   return new Stack(alignment: Alignment.topCenter, children: [
     Container(
       alignment: Alignment.center,
@@ -72,7 +78,9 @@ Widget genUpgradePopupWindow() {
                       width: 182,
                       height: 70,
                       child: TextButton(
-                        onPressed: _closeWindow,
+                        onPressed: (){
+                          Navigator.of(context).pop(true); //关闭对
+                        },
                         autofocus: true,
                         style: ButtonStyle(
                           textStyle: MaterialStateProperty.all(TextStyle(
@@ -149,7 +157,7 @@ Widget genUpgradePopupWindow() {
   ]);
 }
 
-Widget genAgreementPopupWindow() {
+Widget _genAgreementPopupWindow(BuildContext context) {
   return new Container(
     alignment: Alignment.center,
     height: 510,
@@ -280,7 +288,7 @@ Widget genAgreementPopupWindow() {
   );
 }
 
-Widget genAuthorityPopupWindow() {
+Widget _genAuthorityPopupWindow(BuildContext context) {
   return new Stack(alignment: Alignment.topCenter, children: [
     Container(
       alignment: Alignment.center,
@@ -337,7 +345,9 @@ Widget genAuthorityPopupWindow() {
                   width: 320,
                   height: 60,
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pop(true); //关闭对
+                    },
                     autofocus: true,
                     style: ButtonStyle(
                       shape: MaterialStateProperty.all(
@@ -387,13 +397,15 @@ Widget genAuthorityPopupWindow() {
           iconSize: 40,
           color: Colors.white,
           alignment: Alignment.topRight,
-          onPressed: _closeWindow
+          onPressed: (){
+
+          }
       ),
     ),
   ]);
 }
 
-class RandomWordsState extends State<RandomWords> {
+class DialogTestState extends State<DialogTest> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -410,28 +422,19 @@ class RandomWordsState extends State<RandomWords> {
             child: Row(children: [
               TextButton(
                 onPressed: () {
-                  SmartDialog.show(
-                      alignmentTemp: Alignment.center,
-                      clickBgDismissTemp: true,
-                      widget: genUpgradePopupWindow());
+                  showAlertDialog(context, _genUpgradePopupWindow(context));
                 },
                 child: Text("更新弹窗"),
               ),
               TextButton(
                 onPressed: () {
-                  SmartDialog.show(
-                      alignmentTemp: Alignment.center,
-                      clickBgDismissTemp: true,
-                      widget: genAgreementPopupWindow());
+                  showAlertDialog(context, _genAgreementPopupWindow(context));
                 },
                 child: Text("协议弹窗"),
               ),
               TextButton(
                 onPressed: () {
-                  SmartDialog.show(
-                      alignmentTemp: Alignment.center,
-                      clickBgDismissTemp: true,
-                      widget: genAuthorityPopupWindow());
+                  showAlertDialog(context, _genAuthorityPopupWindow(context));
                 },
                 child: Text("权限弹窗"),
               ),

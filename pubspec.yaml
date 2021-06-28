@@ -30,7 +30,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   english_words: ^4.0.0
   oktoast: ^3.0.0
-  flutter_smart_dialog: any
 
 dev_dependencies:
   flutter_test:
